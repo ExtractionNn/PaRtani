@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Закрытый клуб своих 🔥</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #0b0d13;
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(0, 255, 136, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(255, 170, 0, 0.08) 0%, transparent 40%);
+            color: #f1f5f9;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .card {
+            background: #141824;
+            border: 1px solid #262d40;
+            padding: 34px 26px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 255, 136, 0.08);
+            text-align: center;
+            max-width: 420px;
+            width: 92%;
+            position: relative;
+            z-index: 10;
+        }
+
+        .step-badge {
+            display: inline-block;
+            background: #1e2436;
+            color: #00ff88;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            border-radius: 50px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(0, 255, 136, 0.25);
+        }
+
+        .screen {
+            display: none;
+            animation: slideUp 0.35s ease;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .icon {
+            font-size: 54px;
+            margin-bottom: 14px;
+            display: block;
+        }
+
+        h1 {
+            color: #ffffff;
+            font-size: 23px;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        p {
+            color: #94a3b8;
+            font-size: 15px;
+            line-height: 1.5;
+            margin-bottom: 24px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            min-height: 50px;
+        }
+
+        button {
+            padding: 13px 24px;
+            font-size: 15px;
+            font-weight: 700;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.15s, background-color 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-green {
+            background: #00ff88;
+            color: #0b0d13;
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
+        }
+
+        .btn-green:hover {
+            background: #33ff9f;
+            transform: translateY(-2px);
+        }
+
+        .btn-dark {
+            background: #23293a;
+            color: #e2e8f0;
+            border: 1px solid #333c54;
+        }
+
+        .btn-dark:hover {
+            background: #2e364d;
+        }
+
+        .alert-box {
+            display: none;
+            margin-top: 18px;
+            padding: 12px;
+            background: rgba(255, 68, 68, 0.12);
+            border: 1px solid rgba(255, 68, 68, 0.4);
+            color: #ff6b6b;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Прогресс-бар на 3 странице */
+        .progress-wrap {
+            width: 100%;
+            height: 14px;
+            background: #1e2436;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0 12px;
+            border: 1px solid #2d354d;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #00ff88, #00b8ff);
+            transition: width 0.2s;
+        }
+
+        .status-text {
+            font-family: monospace;
+            font-size: 13px;
+            color: #00ff88;
+            min-height: 20px;
+            margin-bottom: 16px;
+        }
+
+        /* Генератор цитат на 6 странице */
+        .quote-box {
+            background: #0f121b;
+            border: 1px dashed #334155;
+            padding: 16px;
+            border-radius: 12px;
+            color: #fbbf24;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 18px;
+            min-height: 74px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .falling-item {
+            position: fixed;
+            top: -10vh;
+            font-size: 24px;
+            animation: drop linear forwards;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        @keyframes drop {
+            to {
+                transform: translateY(115vh) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <!-- СТРАНИЦА 1: Фейсконтроль -->
+        <div class="screen active" id="page1">
+            <span class="step-badge">Этап 1 / 6 • Проверка</span>
+            <span class="icon">🕶️</span>
+            <h1>Стой. Свой или левый?</h1>
+            <p>Вход строго по пацанскому пропуску. Случайным пассажирам доступ закрыт.</p>
+            <div class="buttons">
+                <button class="btn-green" onclick="nextPage(2)">Свой, в доску 🤝</button>
+                <button class="btn-dark" onclick="kickOut()">Левый</button>
+            </div>
+            <div class="alert-box" id="kickMsg">
+                ⛔ Ошибка доступа! Разворачивайся, здесь только для своих.
+            </div>
+        </div>
+
+        <!-- СТРАНИЦА 2: Вопрос про долг -->
+        <div class="screen" id="page2">
+            <span class="step-badge">Этап 2 / 6 • Финансы</span>
+            <span class="icon">💸</span>
+            <h1>Когда сотку вернёшь?</h1>
+            <p>Система помнит всё. Выбирай вариант ответа с умом.</p>
+            <div class="buttons">
+                <button class="btn-dark runaway" id="runBtn2">Сегодня скину на карту</button>
+                <button class="btn-green" onclick="nextPage(3)">Какую сотку? Это на бизнес 😎</button>
+            </div>
+        </div>
+
+        <!-- СТРАНИЦА 3: Сканер на суету -->
+        <div class="screen" id="page3">
+            <span class="step-badge">Этап 3 / 6 • Диагностика</span>
+            <span class="icon">📡</span>
+            <h1>Сканируем уровень суеты...</h1>
+            <p>Не закрывай вкладку, проверяем тебя на здравый движ.</p>
+            <div class="progress-wrap">
+                <div class="progress-bar" id="pBar"></div>
+            </div>
+            <div class="status-text" id="scanStatus">Инициализация...</div>
+            <button class="btn-green" id="scanNextBtn" style="display: none;" onclick="nextPage(4)">Красава, го дальше →</button>
+        </div>
+
+        <!-- СТРАНИЦА 4: Зов на движ -->
+        <div class="screen" id="page4">
+            <span class="step-badge">Этап 4 / 6 • Сборы</span>
+            <span class="icon">🎮🔥</span>
+            <h1>Вечером в катку или на движ?</h1>
+            <p>Отмазки типа «я устал» или «у меня дела» системой не принимаются.</p>
+            <div class="buttons">
+                <button class="btn-green" onclick="nextPage(5)">Залетаю без вопросов 🚀</button>
+                <button class="btn-dark runaway" id="runBtn4">Я сегодня пас 😴</button>
+            </div>
+        </div>
+
+        <!-- СТРАНИЦА 5: Выбор легенды -->
+        <div class="screen" id="page5">
+            <span class="step-badge">Этап 5 / 6 • База</span>
+            <span class="icon">🏆</span>
+            <h1>Кто в компании главный тащер?</h1>
+            <p>Только объективная правда, без самообмана.</p>
+            <div class="buttons">
+                <button class="btn-dark runaway" id="runBtn5a">Я сам</button>
+                <button class="btn-green" onclick="finishClub()">Тот, кто скинул эту ссылку 👑</button>
+                <button class="btn-dark runaway" id="runBtn5b">Рандомный чел</button>
+            </div>
+        </div>
+
+        <!-- СТРАНИЦА 6: Финал + Генератор отмазок -->
+        <div class="screen" id="page6">
+            <span class="step-badge">Этап 6 / 6 • Легенда</span>
+            <span class="icon">🔥👑</span>
+            <h1>Проверка пройдена на 100%!</h1>
+            <p>Официальный статус: <b>свой человек</b>. Лови генератор пацанских цитат на случай важных переговоров:</p>
+            
+            <div class="quote-box" id="quoteBox">
+                «Брат, я уже выхожу» — сказано за 40 минут до выхода из дома.
+            </div>
+
+            <div class="buttons">
+                <button class="btn-green" onclick="newQuote()">Ещё мудрость 🎲</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const quotes = [
+            "«Брат, я уже выхожу» — сказано за 40 минут до выхода из дома.",
+            "Если план А не сработал — в алфавите ещё 32 буквы, погнали.",
+            "Главное в любой непонятной ситуации — делать вид, что так и было задумано.",
+            "Сон для слабых, но завтра я точно лягу пораньше (нет).",
+            "Никогда не поздно передумать, но мы уже вписались.",
+            "Кто не рискует, тот не рассказывает потом смешные истории кентам.",
+            "Лучшая инвестиция — вовремя заправиться и залететь на суету."
+        ];
+
+        function nextPage(num) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.runaway').forEach(btn => {
+                btn.style.position = 'static';
+            });
+            document.getElementById('page' + num).classList.add('active');
+
+            if (num === 3) {
+                startScan();
+            }
+        }
+
+        function kickOut() {
+            document.getElementById('kickMsg').style.display = 'block';
+        }
+
+        // Убегающие кнопки
+        function setupRunaway(id) {
+            const btn = document.getElementById(id);
+            function dodge() {
+                const maxX = window.innerWidth - btn.offsetWidth - 20;
+                const maxY = window.innerHeight - btn.offsetHeight - 20;
+                const x = Math.max(10, Math.floor(Math.random() * maxX));
+                const y = Math.max(10, Math.floor(Math.random() * maxY));
+
+                btn.style.position = 'fixed';
+                btn.style.left = x + 'px';
+                btn.style.top = y + 'px';
+            }
+            btn.addEventListener('mouseover', dodge);
+            btn.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                dodge();
+            });
+        }
+
+        setupRunaway('runBtn2');
+        setupRunaway('runBtn4');
+        setupRunaway('runBtn5a');
+        setupRunaway('runBtn5b');
+
+        // Анимация сканера на 3 странице
+        function startScan() {
+            const bar = document.getElementById('pBar');
+            const status = document.getElementById('scanStatus');
+            const nextBtn = document.getElementById('scanNextBtn');
+            let width = 0;
+
+            const messages = [
+                "Проверка наличия здравого смысла...",
+                "Поиск отмазок от гулянки...",
+                "Отмазок не найдено. Уровень красавчика: MAX",
+                "Доступ одобрен!"
+            ];
+
+            const timer = setInterval(() => {
+                width += 4;
+                bar.style.width = width + '%';
+
+                if (width === 20) status.innerText = messages[0];
+                if (width === 52) status.innerText = messages[1];
+                if (width === 84) status.innerText = messages[2];
+
+                if (width >= 100) {
+                    clearInterval(timer);
+                    status.innerText = messages[3];
+                    nextBtn.style.display = 'inline-block';
+                }
+            }, 90);
+        }
+
+        function newQuote() {
+            const box = document.getElementById('quoteBox');
+            const random = quotes[Math.floor(Math.random() * quotes.length)];
+            box.innerText = random;
+        }
+
+        function finishClub() {
+            nextPage(6);
+            setInterval(() => {
+                const el = document.createElement('div');
+                el.classList.add('falling-item');
+                const icons = ['🔥', '👑', '⚡', '💸', '🤝'];
+                el.innerText = icons[Math.floor(Math.random() * icons.length)];
+                el.style.left = Math.random() * 100 + 'vw';
+                el.style.animationDuration = (Math.random() * 2 + 2.5) + 's';
+                document.body.appendChild(el);
+                setTimeout(() => el.remove(), 4500);
+            }, 250);
+        }
+    </script>
+</body>
+</html>
